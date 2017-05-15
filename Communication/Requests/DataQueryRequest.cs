@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Communication.Events;
 using Communication.Queries;
 
 namespace Communication.Requests
@@ -29,8 +30,9 @@ namespace Communication.Requests
 		public string Message { get; set; }
 		public int Lifetime { get; set; }
 		public bool ExceptsResults { get; set; }
+        public IRequestEventDefinition EventDefinition { get; set; }
 
-		public IConcreteDataQuery GetCommandParameter()
+        public IConcreteDataQuery GetCommandParameter()
 		{
 			throw new NotImplementedException();
 		}

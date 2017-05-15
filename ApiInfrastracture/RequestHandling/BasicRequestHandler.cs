@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using ApiInfrastracture.Results;
 using Communication.Requests;
 using Infrastracture.Routing;
 
@@ -38,7 +39,24 @@ namespace ApiInfrastracture.RequestHandling
 
 	}
 
-    public class BasicRequestHandler : IConcreteRequestHandler
+	public class RequestTimedOutArgs 
+	{
+
+		public RequestTimedOutArgs(string reqId)
+		{
+			RequestId = reqId;
+		}
+
+		public string RequestId
+		{
+			get;
+			set;
+		}
+
+	}
+
+
+	public class BasicRequestHandler : IConcreteRequestHandler
     {
         private IConcreteRequestEventRouter _router;
         private List<IConcreteRequest> _requests;
@@ -54,14 +72,10 @@ namespace ApiInfrastracture.RequestHandling
         {
             _router.Publish(request);
             _requests.Add(request);
-			Timer t = new Timer();
-			t.Interval = request.Lifetime; 
-			t.AutoReset = true; 
-			t.Elapsed += new RequestTimedOutEventArgs(RequestTimedOut,request.Id);
-            _timers.Add(t);
-			t.Start();
-
-
+			var autoEvent = new AutoResetEvent(false);
+			Timer t = new Timer(RequestTimedOut,new RequestTimedOutArgs(request.Id),Timeout.Infinite,request.Lifetime);
+			autoEvent.WaitOne();
+            return new RequestFailedQueryResult(){ Description = "", ErrorCode = 500 };
         }
 
         public Task<object> HandleRequestAsync(IConcreteRequest request)
@@ -84,9 +98,11 @@ namespace ApiInfrastracture.RequestHandling
            
         }
 
-        void RequestTimedOut(object sender, RequestTimedOutEventArgs e)
+        void RequestTimedOut(Object stateInfo)
 		{
-            _requests.Remove(_requests.FirstOrDefault(r=>r.Id == e.RequestId));
+            //object sender, RequestTimedOutEventArgs e
+            RequestTimedOutArgs args = (RequestTimedOutArgs)stateInfo;
+			_requests.Remove(_requests.FirstOrDefault(r=>r.Id == args.RequestId));
 		}
 
     }

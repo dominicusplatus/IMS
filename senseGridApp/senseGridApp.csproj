@@ -30,6 +30,12 @@
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="1.0.0" />
+    <PackageReference Include="Autofac" Version="4.5.0" />
+    <PackageReference Include="Autofac.Configuration" Version="4.0.1" />
+    <PackageReference Include="Autofac.Extras.AggregateService" Version="4.1.0" />
+    <PackageReference Include="Autofac.Multitenant" Version="4.0.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.1.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.0" />

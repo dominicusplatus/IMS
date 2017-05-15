@@ -10,7 +10,7 @@ namespace Communication.Events
 
     public interface IRequestEventDefinition              
     {
-        int EventType
+        RequestEventType EventType
         {
             get;
             set;

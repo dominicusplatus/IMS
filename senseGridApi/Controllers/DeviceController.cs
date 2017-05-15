@@ -19,8 +19,17 @@ namespace senseGridApp.Controllers
 
         public DeviceController()
         {
-            _handler = new TransientRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult>();
-            _concreteHandler = new BasicRequestHandler();
+            //_handler = new TransientRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult>();
+           // _concreteHandler = new BasicRequestHandler(new TransientConcreteRequestEventRouter());
+        }
+
+        public DeviceController(
+            IRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult> handler,
+            IConcreteRequestHandler concreteHandler
+        )
+        {
+            _handler = handler;
+            _concreteHandler = concreteHandler;
         }
 
         // GET api/values

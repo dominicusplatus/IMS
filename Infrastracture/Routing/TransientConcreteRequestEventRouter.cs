@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Communication.Events;
 using Communication.Requests;
 
@@ -8,51 +9,77 @@ namespace Infrastracture.Routing
 
 	public class TransientConcreteRequestEventRouter: IConcreteRequestEventRouter
 	{
-		private Dictionary<RequestEventType, IObserver<IConcreteRequest>> _subscriptions;
+		private Dictionary<RequestEventType, List<IObserver<IConcreteRequest>>> _subscriptions;
         private List<IConcreteRequest> requests;
 
-		public Dictionary<RequestEventType, IObserver<IConcreteRequest>> Subscriptions
+		public Dictionary<RequestEventType, List<IObserver<IConcreteRequest>>> Subscriptions
 		{
 			get { return _subscriptions; }
 			set { _subscriptions = value; }
 		}
 
+        Lookup<RequestEventType, IObserver<IConcreteRequest>> IConcreteRequestEventRouter.Subscriptions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
         public void Publish(IConcreteRequest request)
         {
             requests.Add(request);
-            foreach (var subscription in _subscriptions)
-            {
-                if(observer.)
-                observer.OnNext(request);
-            }
+			lock (_subscriptions)
+			{
+				var targetSubscriptions = _subscriptions[request.EventDefinition.EventType];
+				if (targetSubscriptions != null)
+				{
+					foreach (var item in targetSubscriptions)
+					{
+						item.OnNext(request);
+					}
+				}
+			}
+
         }
-
-        public IDisposable Subscribe(IObserver<IConcreteRequest> observer)
-		{
-			// Check whether observer is already registered. If not, add it
-
-		}
 
         public bool Subscribe(RequestEventType type, IObserver<IConcreteRequest> observer)
         {
-            IObserver<IConcreteRequest> searchedObserver;
-			if (! (_subscriptions.TryGetValue(type, out searchedObserver) && searchedObserver == observer))
+            List<IObserver<IConcreteRequest>> searchedSubscriptions;
+			if (! (_subscriptions.TryGetValue(type, out searchedSubscriptions) ) )
 			{
-				_subscriptions.Add(type,observer);
+                searchedSubscriptions = new List<IObserver<IConcreteRequest>>();
+				_subscriptions.Add(type,searchedSubscriptions);
                 return true;
-			}
+            }else{
+                if(searchedSubscriptions !=null){
+                    if(!searchedSubscriptions.Contains(observer)){
+                        lock(searchedSubscriptions){
+                            searchedSubscriptions.Add(observer);
+                        }
+                        return true;
+                    }
+                }
+            }
             return false;
         }
 
-        public void  Unsubscribe(RequestEventType type, IObserver<IConcreteRequest> observer)
+        public IDisposable Subscribe(IObserver<IConcreteRequest> observer)
         {
-            IObserver<IConcreteRequest> searchedObserver;
-			if ((_subscriptions.TryGetValue(type, out searchedObserver) && searchedObserver == observer))
-			{
-				//_subscriptions.Remove(searchedObserver);
-			}
+            return null;
         }
 
-	}
+        public void Unsubscribe(RequestEventType type, IObserver<IConcreteRequest> observer)
+        {
+            List<IObserver<IConcreteRequest>> searchedSubscriptions;
+            if ((_subscriptions.TryGetValue(type, out searchedSubscriptions)))
+            {
+                if (searchedSubscriptions != null)
+                {
+                    if (!searchedSubscriptions.Contains(observer))
+                    {
+                        lock(searchedSubscriptions){
+                            searchedSubscriptions.Remove(observer);
+                        }
+                    }
+                }
+            }
+        }
+	
+    }
 
 }

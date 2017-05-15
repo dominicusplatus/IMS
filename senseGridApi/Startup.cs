@@ -2,6 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using ApiInfrastracture.RequestHandling;
+using ApiInfrastracture.Results;
+using Autofac;
+using Communication.Queries;
+using Core.POCO.Device;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,14 +28,21 @@ namespace senseGridApi
             Configuration = builder.Build();
         }
 
-        public IConfigurationRoot Configuration { get; }
+		public IConfigurationRoot Configuration { get; }
+		public IContainer ApplicationContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
             // Add framework services.
             services.AddMvc();
 
+			var builder = new ContainerBuilder();
+			builder.RegisterType<IRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult>>().As<IRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult>>();
+			builder.Populate(services);
+			this.ApplicationContainer = builder.Build();
+
+	
             services.AddLogging();
 
             // Register the Swagger generator, defining one or more Swagger documents
@@ -39,7 +51,11 @@ namespace senseGridApi
                 c.SwaggerDoc("v1", new Info { Title = "Iot API", Version = "v1" });
             });
 
-        }
+			// Create the IServiceProvider based on the container.
+			return new AutofacServiceProvider(this.ApplicationContainer);
+
+		}
+
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
