@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ApiInfrastracture.RequestHandling;
 using ApiInfrastracture.Results;
+using Communication.Events;
 using Communication.Queries;
 using Communication.Requests;
 using Core.POCO.Device;
@@ -14,21 +15,12 @@ namespace senseGridApp.Controllers
     [Route("api/[controller]")]
     public class DeviceController : Controller
     {
-        private IRequestHandler<IDeviceQuery<IotDevice>,  IDeviceQueryResult> _handler;
         private IConcreteRequestHandler _concreteHandler;
 
-        public DeviceController()
-        {
-            //_handler = new TransientRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult>();
-           // _concreteHandler = new BasicRequestHandler(new TransientConcreteRequestEventRouter());
-        }
-
         public DeviceController(
-            IRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult> handler,
             IConcreteRequestHandler concreteHandler
         )
         {
-            _handler = handler;
             _concreteHandler = concreteHandler;
         }
 
@@ -48,12 +40,16 @@ namespace senseGridApp.Controllers
             request.Lifetime = 1000;
             request.Id = Guid.NewGuid().ToString();
             request.ExceptsResults = true;
+            request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
             request.SetExpectedPrototype(new DeviceQueryResult());
 
-            var query = _concreteHandler.HandleRequestAsync(request);  //_handler.HandleRequestAsync(request);
-            query.Wait();
-            return ((DeviceQueryResult)query.Result).Device;
-           // return new IotDevice();
+            var query = _concreteHandler.HandleRequest(request);  //_handler.HandleRequestAsync(request);
+            return ((DeviceQueryResult)query).Device;
+
+            //query.Wait();
+            //return ((DeviceQueryResult)query.Result).Device;
+         
+            // return new IotDevice();
         }
 
         // POST api/values

@@ -16,4 +16,10 @@ namespace Communication.Queries
 		int Timeout { get; set; }
 	}
 
+	public class ConcreteDataQueryAll
+	{
+		int Limit { get; set; }
+		int Timeout { get; set; }
+	}
+
 }

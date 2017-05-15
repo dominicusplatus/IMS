@@ -18,23 +18,29 @@ namespace Infrastracture.Routing
 			set { _subscriptions = value; }
 		}
 
-        Lookup<RequestEventType, IObserver<IConcreteRequest>> IConcreteRequestEventRouter.Subscriptions { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public TransientConcreteRequestEventRouter()
+        {
+            _subscriptions = new Dictionary<RequestEventType, List<IObserver<IConcreteRequest>>>();
+            requests = new List<IConcreteRequest>();
+        }
 
         public void Publish(IConcreteRequest request)
         {
             requests.Add(request);
 			lock (_subscriptions)
 			{
-				var targetSubscriptions = _subscriptions[request.EventDefinition.EventType];
-				if (targetSubscriptions != null)
-				{
-					foreach (var item in targetSubscriptions)
+                if(request.EventDefinition != null){
+                    var targetSubscriptions = new List<IObserver<IConcreteRequest>>();
+                    _subscriptions.TryGetValue(request.EventDefinition.EventType, out targetSubscriptions); //_subscriptions[request.EventDefinition.EventType];
+                    if (targetSubscriptions != null)
 					{
-						item.OnNext(request);
+						foreach (var item in targetSubscriptions)
+						{
+							item.OnNext(request);
+						}
 					}
-				}
+                }
 			}
-
         }
 
         public bool Subscribe(RequestEventType type, IObserver<IConcreteRequest> observer)

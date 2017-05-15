@@ -21,9 +21,7 @@ namespace Communication.Events
             get;
             set;
         }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-
-    }
-
+     }
 
 
 }

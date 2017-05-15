@@ -20,7 +20,7 @@ namespace Communication.Requests
 
         public void SetExpectedPrototype(TPout prototype)
         {
-            throw new NotImplementedException();
+           
         }
     }
 
@@ -31,15 +31,17 @@ namespace Communication.Requests
 		public int Lifetime { get; set; }
 		public bool ExceptsResults { get; set; }
         public IRequestEventDefinition EventDefinition { get; set; }
+        public IConcreteDataQuery DataQuery { get; set; }
+        public object Prototype  { get;  set; }
 
         public IConcreteDataQuery GetCommandParameter()
 		{
-			throw new NotImplementedException();
+            return DataQuery;
 		}
 
 		public void SetExpectedPrototype(object prototype)
 		{
-			throw new NotImplementedException();
+            Prototype = prototype;
 		}
 	}
 

@@ -61,11 +61,12 @@ namespace ApiInfrastracture.RequestHandling
         private IConcreteRequestEventRouter _router;
         private List<IConcreteRequest> _requests;
         private List<Timer> _timers;
-        private Timer _timer;
 
         public BasicRequestHandler(IConcreteRequestEventRouter router)
         {
             _router = router;
+            _requests = new List<IConcreteRequest>();
+            _timers = new List<Timer>();
         }
 
         public object HandleRequest(IConcreteRequest request)
@@ -73,7 +74,7 @@ namespace ApiInfrastracture.RequestHandling
             _router.Publish(request);
             _requests.Add(request);
 			var autoEvent = new AutoResetEvent(false);
-			Timer t = new Timer(RequestTimedOut,new RequestTimedOutArgs(request.Id),Timeout.Infinite,request.Lifetime);
+			Timer t = new Timer(RequestTimedOut,new RequestTimedOutArgs(request.Id),request.Lifetime, Timeout.Infinite);
 			autoEvent.WaitOne();
             return new RequestFailedQueryResult(){ Description = "", ErrorCode = 500 };
         }

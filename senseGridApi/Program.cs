@@ -14,6 +14,7 @@ namespace senseGridApi
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+		    	.UseAutofac()
                 .UseContentRoot(Directory.GetCurrentDirectory())
                 .UseIISIntegration()
                 .UseStartup<Startup>()
