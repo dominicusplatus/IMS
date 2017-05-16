@@ -64,7 +64,7 @@ namespace Communication.Routing
             return false;
         }
 
-        public IDisposable Subscribe(IObserver<IConcreteRequest> observer)
+        public IDisposable Subscribe(IObserver<object> observer)
         {
             return null;
         }
@@ -85,7 +85,23 @@ namespace Communication.Routing
                 }
             }
         }
-	
+
+        public void Reply(RequestEventType type, string Id, object response)
+        {
+			lock (_subscriptions)
+			{
+				var targetSubscriptions = new List<IObserver<IConcreteRequest>>();
+				_subscriptions.TryGetValue(type, out targetSubscriptions); 
+				if (targetSubscriptions != null)
+				{
+                    var abstractSubscriptions = (List<IObserver<IConcreteRequest>>)targetSubscriptions;
+					foreach (var item in abstractSubscriptions)
+					{
+						item.OnNext(response);
+					}
+				}
+			}
+        }
     }
 
 }
