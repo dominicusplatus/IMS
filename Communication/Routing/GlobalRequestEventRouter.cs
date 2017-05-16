@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Infrastracture.Routing
+namespace Communication.Routing
 {
     public class GlobalRequestEventRouter<TIn, TOut> : IRequestEventRouter<TIn>
     {

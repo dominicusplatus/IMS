@@ -20,7 +20,8 @@ using Communication.Requests;
 using Core.POCO.Device;
 
 using Info = Swashbuckle.AspNetCore.Swagger.Info;
-using Infrastracture.Routing;
+using Communication.Routing;
+using Domain.Iot;
 
 namespace senseGridApi
 {
@@ -66,6 +67,8 @@ namespace senseGridApi
           //  containerBuilder.RegisterType<IRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult>>().AsImplementedInterfaces().InstancePerDependency();
             containerBuilder.RegisterType<TransientConcreteRequestEventRouter>().AsImplementedInterfaces().InstancePerDependency();
             containerBuilder.RegisterType<BasicRequestHandler>().AsImplementedInterfaces().InstancePerDependency();
+            containerBuilder.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces().InstancePerRequest();
+
 
 
             /*

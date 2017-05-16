@@ -11,5 +11,6 @@
   <ItemGroup>
     <Folder Include="Events\" />
     <Folder Include="Events\Query\" />
+    <Folder Include="Routing\" />
   </ItemGroup>
 </Project>

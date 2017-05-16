@@ -18,3 +18,4 @@ namespace Core.POCO.Device
         public string Value { get; set; }
     }
 }
+ 

@@ -4,7 +4,7 @@ using System.Linq;
 using Communication.Events;
 using Communication.Requests;
 
-namespace Infrastracture.Routing
+namespace Communication.Routing
 {
 
 	public class TransientConcreteRequestEventRouter: IConcreteRequestEventRouter

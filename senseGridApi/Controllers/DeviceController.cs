@@ -43,13 +43,12 @@ namespace senseGridApp.Controllers
             request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
             request.SetExpectedPrototype(new DeviceQueryResult());
 
-            var query = _concreteHandler.HandleRequest(request);  //_handler.HandleRequestAsync(request);
-            return ((DeviceQueryResult)query).Device;
-
-            //query.Wait();
-            //return ((DeviceQueryResult)query.Result).Device;
-         
-            // return new IotDevice();
+            var result = _concreteHandler.HandleRequest(request);
+            if(result is DeviceQueryResult){
+                return ((DeviceQueryResult)result)?.Device;
+            }else{
+                return new IotDevice();
+            }
         }
 
         // POST api/values
