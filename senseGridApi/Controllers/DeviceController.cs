@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using ApiInfrastracture.RequestHandling;
 using ApiInfrastracture.Results;
 using Communication.Events;
 using Communication.Queries;
 using Communication.Requests;
+using Communication.Response;
 using Core.POCO.Device;
 using Core.Results;
 using Microsoft.AspNetCore.Mvc;
@@ -43,12 +45,27 @@ namespace senseGridApp.Controllers
             request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
             request.SetExpectedPrototype(new DeviceQueryResult());
 
-            var result = _concreteHandler.HandleRequest(request);
-            if(result is DeviceQueryResult){
-                return ((DeviceQueryResult)result)?.Device;
-            }else{
-                return new IotDevice();
+            var response = _concreteHandler.HandleRequest(request);
+            try
+            {
+				var responseConrete = response as ConcreteDataQueryResponse;
+                if (responseConrete!=null){
+                  
+					if (responseConrete?.Result is DeviceQueryResult)
+					{
+						return ((DeviceQueryResult)responseConrete.Result)?.Device;
+					}
+					else
+					{
+						return new IotDevice();
+					}
+                }
             }
+            catch (Exception ex)
+            {
+				
+            }
+           return new IotDevice();
         }
 
         // POST api/values

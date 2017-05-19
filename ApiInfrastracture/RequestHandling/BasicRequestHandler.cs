@@ -94,10 +94,12 @@ namespace ApiInfrastracture.RequestHandling
 
         public object HandleRequest(IConcreteRequest request)
         {
-            _router.Publish(request);
             var autoEvent = new AutoResetEvent(false);
             TransientRequestState state = new TransientRequestState(request,autoEvent);
             _requestStates.Add(state);
+
+			_router.Publish(request);
+
             var processed = autoEvent.WaitOne(request.Lifetime);
             if(state.Response != null){
                 return state.Response;
@@ -120,7 +122,7 @@ namespace ApiInfrastracture.RequestHandling
             if( response.GetType().GetInterfaces().Contains(typeof(IConcreteResponse)) )
             {
                 var eventResponse = (IConcreteResponse)response;
-				var adjacentRequest = _requestStates.FirstOrDefault(r => r.Request.Id == eventResponse.RequestEventDefinition.Id);
+				var adjacentRequest = _requestStates.FirstOrDefault(r => r.Request.EventDefinition.Id == eventResponse.RequestEventDefinition.Id);
 				if (adjacentRequest != null)
 				{
 					adjacentRequest.Response = eventResponse;
