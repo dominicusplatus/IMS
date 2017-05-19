@@ -31,7 +31,7 @@ namespace Communication.Routing
 			{
                 if(request.EventDefinition != null){
                     var targetSubscriptions = new List<IObserver<IConcreteRequest>>();
-                    _subscriptions.TryGetValue(request.EventDefinition.EventType, out targetSubscriptions); //_subscriptions[request.EventDefinition.EventType];
+                    _subscriptions.TryGetValue(request.EventDefinition.EventType, out targetSubscriptions); 
                     if (targetSubscriptions != null)
 					{
 						foreach (var item in targetSubscriptions)
@@ -49,9 +49,7 @@ namespace Communication.Routing
 			if (! (_subscriptions.TryGetValue(type, out searchedSubscriptions) ) )
 			{
                 searchedSubscriptions = new List<IObserver<IConcreteRequest>>();
-				_subscriptions.Add(type,searchedSubscriptions);
-                return true;
-            }else{
+				_subscriptions.Add(type,searchedSubscriptions);  
                 if(searchedSubscriptions !=null){
                     if(!searchedSubscriptions.Contains(observer)){
                         lock(searchedSubscriptions){
@@ -64,7 +62,7 @@ namespace Communication.Routing
             return false;
         }
 
-        public IDisposable Subscribe(IObserver<object> observer)
+        public IDisposable Subscribe(IObserver<IConcreteRequest> observer)
         {
             return null;
         }
@@ -86,22 +84,7 @@ namespace Communication.Routing
             }
         }
 
-        public void Reply(RequestEventType type, string Id, object response)
-        {
-			lock (_subscriptions)
-			{
-				var targetSubscriptions = new List<IObserver<IConcreteRequest>>();
-				_subscriptions.TryGetValue(type, out targetSubscriptions); 
-				if (targetSubscriptions != null)
-				{
-                    var abstractSubscriptions = (List<IObserver<IConcreteRequest>>)targetSubscriptions;
-					foreach (var item in abstractSubscriptions)
-					{
-						item.OnNext(response);
-					}
-				}
-			}
-        }
+
     }
 
 }

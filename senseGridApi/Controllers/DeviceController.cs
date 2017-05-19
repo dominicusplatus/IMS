@@ -8,6 +8,7 @@ using Communication.Events;
 using Communication.Queries;
 using Communication.Requests;
 using Core.POCO.Device;
+using Core.Results;
 using Microsoft.AspNetCore.Mvc;
 
 namespace senseGridApp.Controllers
@@ -35,7 +36,6 @@ namespace senseGridApp.Controllers
         [HttpGet("{id}")]
         public IotDevice Get(int id)
         {
-            // IRequest<IDeviceQuery<IotDevice>, IDeviceQueryResult> request = new DataQueryRequest<IDeviceQuery<IotDevice>, IDeviceQueryResult>();
             IConcreteRequest request = new ConcreteDataQueryRequest();
             request.Lifetime = 1000;
             request.Id = Guid.NewGuid().ToString();

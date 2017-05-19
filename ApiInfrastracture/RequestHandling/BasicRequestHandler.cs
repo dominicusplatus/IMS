@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using ApiInfrastracture.Results;
+using Communication.Events.Query;
 using Communication.Requests;
+using Communication.Response;
 using Communication.Routing;
 
 namespace ApiInfrastracture.RequestHandling
 {
 
-    public interface IConcreteRequestHandler  : IObserver<IConcreteRequest>
+    public interface IConcreteRequestHandler  : IObserver<IConcreteResponse>
     {
         object HandleRequest(IConcreteRequest request);
         Task<object> HandleRequestAsync(IConcreteRequest request);
@@ -73,19 +76,26 @@ namespace ApiInfrastracture.RequestHandling
     public class BasicRequestHandler : IConcreteRequestHandler
     {
         private IConcreteRequestEventRouter _router;
+        private IConcreteResponseEventRouter _responseRouter;
         private List<TransientRequestState> _requestStates;
+        private IConcreteRequestResponseProvider _responseProvider;
 
-        public BasicRequestHandler(IConcreteRequestEventRouter router)
+        public BasicRequestHandler(IConcreteRequestEventRouter router, 
+                                   IConcreteResponseEventRouter responseRouter,
+                                   IConcreteRequestResponseProvider responseProvider
+                                  )
         {
             _router = router;
-            _requestStates = new List<TransientRequestState>();
+            _responseRouter = responseRouter;
+			_requestStates = new List<TransientRequestState>();
+            _responseProvider = responseProvider;
+			_responseRouter.Subscribe(ResponseEventType.QueryDeviceResponseReady, this );
         }
 
         public object HandleRequest(IConcreteRequest request)
         {
             _router.Publish(request);
             var autoEvent = new AutoResetEvent(false);
-            //Timer t = new Timer(RequestTimedOut,new RequestTimedOutArgs(request.Id),request.Lifetime, Timeout.Infinite);
             TransientRequestState state = new TransientRequestState(request,autoEvent);
             _requestStates.Add(state);
             var processed = autoEvent.WaitOne(request.Lifetime);
@@ -105,43 +115,58 @@ namespace ApiInfrastracture.RequestHandling
             
         }
 
-        public void FinishProcessingRequest(object request)
+        public void FinishProcessingRequest(object response)
         {
-            var requestTimer = _requestStates.FirstOrDefault().ResetTimeout;
-            if (requestTimer != null)
+            if( response.GetType().GetInterfaces().Contains(typeof(IConcreteResponse)) )
             {
-                requestTimer.Set();
-                //requestTimer.Change(0, 0);
-            }  
-        }
+                var eventResponse = (IConcreteResponse)response;
+				var adjacentRequest = _requestStates.FirstOrDefault(r => r.Request.Id == eventResponse.RequestEventDefinition.Id);
+				if (adjacentRequest != null)
+				{
+					adjacentRequest.Response = eventResponse;
+					var requestTimer = adjacentRequest?.ResetTimeout;
+					if (requestTimer != null)
+					{
+						requestTimer.Set();
+					}
+				}
 
-        public void OnCompleted(object request)
-        {
-            FinishProcessingRequest(request);
+            }
+            else if (response.GetType() == typeof(RequestTimedOutArgs))
+			{
+				var timeoutResponse = (RequestTimedOutArgs)response;
+				var adjacentRequest = _requestStates.FirstOrDefault(r => r.Request.Id == timeoutResponse.RequestId);
+                if (adjacentRequest != null)
+                {
+					var requestTimer = adjacentRequest?.ResetTimeout;
+					if (requestTimer != null)
+					{
+						requestTimer.Set();
+					}
+                }
+            }
 
-        }
-
-        public void OnError(Exception error)
-        {
-            
-        }
-
-        public void OnNext(IConcreteRequest value)
-        {
-           
         }
 
         void RequestTimedOut(Object stateInfo)
         {
-            //object sender, RequestTimedOutEventArgs e
             RequestTimedOutArgs args = (RequestTimedOutArgs)stateInfo;
-           // _requests.Remove(_requests.FirstOrDefault(r=>r.Id == args.RequestId));
             FinishProcessingRequest(stateInfo);
         }
 
         public void OnCompleted()
         {
-            throw new NotImplementedException();
+			//TODO
+        }
+
+        public void OnNext(IConcreteResponse value)
+        {
+			FinishProcessingRequest(value);
+        }
+
+        public void OnError(Exception error)
+        {
+           
         }
     }
 }

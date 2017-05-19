@@ -64,10 +64,14 @@ namespace senseGridApi
 			//containerBuilder.RegisterType<Foo>().AsImplementedInterfaces().SingleInstance();
 
 			containerBuilder.RegisterModule(new AutofacModule());
-          //  containerBuilder.RegisterType<IRequestHandler<IDeviceQuery<IotDevice>, IDeviceQueryResult>>().AsImplementedInterfaces().InstancePerDependency();
-            containerBuilder.RegisterType<TransientConcreteRequestEventRouter>().AsImplementedInterfaces().InstancePerDependency();
-            containerBuilder.RegisterType<BasicRequestHandler>().AsImplementedInterfaces().InstancePerDependency();
-            containerBuilder.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces().InstancePerRequest();
+            containerBuilder.RegisterType<TransientConcreteRequestEventRouter>().AsImplementedInterfaces().InstancePerLifetimeScope();    //InstancePerRequest
+			containerBuilder.RegisterType<TransientConcreteResponseEventRouter>().AsImplementedInterfaces().InstancePerLifetimeScope();
+            containerBuilder.RegisterType<BasicRequestHandler>().AsImplementedInterfaces().InstancePerLifetimeScope();
+
+			containerBuilder.RegisterType<IotDeviceDataProvider>().Named<IConcreteRequestResponseProvider>("handler");
+			containerBuilder.RegisterDecorator<IConcreteRequestResponseProvider>((c, inner) => new ConcreteRequestResponseProviderDecorator(inner),fromKey: "handler");
+
+            //containerBuilder.RegisterType<IotDeviceDataProvider>().AsSelf().InstancePerRequest();
 
 
 
