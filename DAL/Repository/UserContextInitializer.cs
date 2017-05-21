@@ -32,21 +32,29 @@ namespace DAL.Repository
 
 		public async Task Seed()
 		{
-			var email = "user@test.com";
-			if (await _userManager.FindByEmailAsync(email) == null)
-			{
-				IotApplicationUser user = new IotApplicationUser
+            try
+            {
+				var email = "user@test.com";
+				if (await _userManager.FindByEmailAsync(email) == null)
 				{
-					UserName = email,
-					Email = email,
-					EmailConfirmed = true,
-					Nickname = "John Doe"
-				};
+					IotApplicationUser user = new IotApplicationUser
+					{
+						UserName = email,
+						Email = email,
+						EmailConfirmed = true,
+						Nickname = "John Doe"
+					};
 
-				await _userManager.CreateAsync(user, "password");
-			}
+					await _userManager.CreateAsync(user, "passwordComplex123#");
+				}
 
-			_context.SaveChanges();
+				_context.SaveChanges();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
 		}
 	}
 

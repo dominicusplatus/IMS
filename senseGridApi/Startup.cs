@@ -20,8 +20,7 @@ using ApiInfrastracture.Results;
 using Communication.Queries;
 using Communication.Requests;
 using Core.POCO.Device;
-using MySql.Data.EntityFrameworkCore;
-using MySQL.Data.EntityFrameworkCore.Extensions;
+using Pomelo.EntityFrameworkCore.MySql;
 
 using Info = Swashbuckle.AspNetCore.Swagger.Info;
 using Communication.Routing;
@@ -63,7 +62,7 @@ namespace senseGridApi
 			{
 				//	options.UseNpgsql(Configuration.GetConnectionString("defaultConnection"));
 				// Configure the context to use an in-memory store.
-				options.UseMySQL("Server=localhost;Database=iotgrid;Uid=root;Pwd=;");
+				options.UseMySql("Server=localhost;Database=iotgrid;Uid=root;Pwd=;");
 				options.UseOpenIddict();
 			});
 
@@ -174,9 +173,11 @@ namespace senseGridApi
 			// Do not call EnsureCreated() b/c it does not log to _EFMigrationsHistory table (Ref: https://github.com/aspnet/EntityFramework/issues/3875)
 			databaseInitializer.Migrate();
 
+			databaseInitializer.Seed().GetAwaiter().GetResult();
+            /*
 			if (env.IsDevelopment())
 			{
-				databaseInitializer.Seed().GetAwaiter().GetResult();
+				//databaseInitializer.Seed().GetAwaiter().GetResult();
 
 				// Configure Webpack Middleware (Ref: http://blog.stevensanderson.com/2016/05/02/angular2-react-knockout-apps-on-aspnet-core/)
 				//  - Intercepts requests for webpack bundles and routes them through Webpack - this prevents needing to run Webpack file watcher separately
@@ -191,7 +192,7 @@ namespace senseGridApi
 				app.UseDeveloperExceptionPage();
 				//app.UseDatabaseErrorPage();
 			}
-
+            */
 
 			app.UseMvcWithDefaultRoute();
 

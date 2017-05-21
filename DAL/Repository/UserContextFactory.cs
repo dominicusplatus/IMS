@@ -2,8 +2,7 @@
 using ConfigurationTools;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using MySql.Data.EntityFrameworkCore;
-using MySQL.Data.EntityFrameworkCore.Extensions;
+using Pomelo.EntityFrameworkCore.MySql;
 
 namespace DAL.Repository
 {
@@ -24,14 +23,14 @@ namespace DAL.Repository
         public UserDbContext Create()
 		{
 			var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
-			optionsBuilder.UseMySQL(_datasourceFactory.Create().ConnectionString);
+			optionsBuilder.UseMySql(_datasourceFactory.Create().ConnectionString);
 			return new UserDbContext(optionsBuilder.Options);
 		}
 
         public UserDbContext Create(DbContextFactoryOptions options)
         {
 			var optionsBuilder = new DbContextOptionsBuilder<UserDbContext>();
-            optionsBuilder.UseMySQL(_datasourceFactory.Create().ConnectionString);
+            optionsBuilder.UseMySql(_datasourceFactory.Create().ConnectionString);
 			return new UserDbContext(optionsBuilder.Options);
         }
     }

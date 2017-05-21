@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Configuration;
 
 namespace senseGridApi
 {
@@ -12,16 +13,32 @@ namespace senseGridApi
     {
         public static void Main(string[] args)
         {
-            var host = new WebHostBuilder()
-                .UseKestrel()
-		    	.UseAutofac()
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
-                .UseStartup<Startup>()
-                .UseApplicationInsights()
-                .Build();
+            try
+            {
+                
+				    var config = new ConfigurationBuilder()
+					.SetBasePath(Directory.GetCurrentDirectory())
+					.AddJsonFile("appsettings.json")
+					.Build();
+                    
 
-            host.Run();
+				var host = new WebHostBuilder()
+					.UseKestrel()
+					.UseAutofac()
+					.UseUrls(config["serverBindingUrl"])
+					.UseContentRoot(Directory.GetCurrentDirectory())
+					.UseIISIntegration()
+					.UseStartup<Startup>()
+					.UseApplicationInsights()
+					.Build();
+
+				host.Run();
+            }
+            catch (Exception ex)
+            {
+
+            }
+
         }
     }
 }
