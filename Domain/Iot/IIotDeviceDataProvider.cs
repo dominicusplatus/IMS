@@ -1,7 +1,7 @@
 ﻿using System;
 using Communication.Requests;
 
-namespace Domain.Iot
+namespace IotDomain.Iot
 {
     public interface IIotDeviceDataProvider : IConcreteRequestResponseProvider
     {

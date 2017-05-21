@@ -7,7 +7,7 @@ using Communication.Response;
 using Communication.Events.Query;
 using Communication.Events;
 
-namespace Domain.Iot
+namespace IotDomain.Iot
 {
     public class IotDeviceDataProvider : IConcreteRequestResponseProvider
     {
