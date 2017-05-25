@@ -7,6 +7,7 @@
   <ItemGroup>
     <Folder Include="wwwroot\" />
     <Folder Include="Dependency\" />
+    <Folder Include="ClientApp\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.5.0" />

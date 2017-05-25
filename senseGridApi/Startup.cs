@@ -174,7 +174,8 @@ namespace senseGridApi
 			databaseInitializer.Migrate();
 
 			databaseInitializer.Seed().GetAwaiter().GetResult();
-            /*
+
+			/*
 			if (env.IsDevelopment())
 			{
 				//databaseInitializer.Seed().GetAwaiter().GetResult();
@@ -194,7 +195,22 @@ namespace senseGridApi
 			}
             */
 
-			app.UseMvcWithDefaultRoute();
+			if (env.IsDevelopment())
+			{
+				app.UseDeveloperExceptionPage();
+				app.UseWebpackDevMiddleware(new WebpackDevMiddlewareOptions
+				{
+					HotModuleReplacement = true
+				});
+			}
+			else
+			{
+				app.UseExceptionHandler("/Home/Error");
+			}
+
+
+
+			//  app.UseMvcWithDefaultRoute();
 
 			// Enable middleware to serve generated Swagger as a JSON endpoint.
 			app.UseSwagger();
@@ -204,6 +220,17 @@ namespace senseGridApi
 			{
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
 			});
+
+			app.UseMvc(routes =>
+    		   {
+    			   routes.MapRoute(
+    				   name: "default",
+    				   template: "{controller=Home}/{action=Index}/{id?}");
+
+    			   routes.MapSpaFallbackRoute(
+    				   name: "spa-fallback",
+    				   defaults: new { controller = "Home", action = "Index" });
+    		   });
 
 		}
 
