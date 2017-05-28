@@ -4,6 +4,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Folder Include="Repository\" />
+    <Folder Include="Repository\Mongo\" />
+    <Folder Include="Repository\Device\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="1.1.1" />
@@ -14,6 +16,7 @@
     <PackageReference Include="System.Collections.Immutable" Version="1.3.1" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="1.1.2" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql.Design" Version="1.1.2" />
+    <PackageReference Include="MongoDB.Driver" Version="2.4.3" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />

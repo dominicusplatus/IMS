@@ -30,6 +30,8 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AspNet.Security.OpenIdConnect.Primitives;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using IotDomain.Iot;
+using IotRepository;
+using DAL.Repository.Mongo;
 
 namespace senseGridApi
 {
@@ -142,6 +144,8 @@ namespace senseGridApi
 			containerBuilder.RegisterType<IotDeviceDataProvider>().Named<IConcreteRequestResponseProvider>("handler");
 			containerBuilder.RegisterDecorator<IConcreteRequestResponseProvider>((c, inner) => new ConcreteRequestResponseProviderDecorator(inner),fromKey: "handler");
 
+            containerBuilder.RegisterType<MongoRepository>().AsImplementedInterfaces().InstancePerDependency();
+
             //containerBuilder.RegisterType<IotDeviceDataProvider>().AsSelf().InstancePerRequest();
 
 
@@ -221,6 +225,7 @@ namespace senseGridApi
 				c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
 			});
 
+			app.UseStaticFiles();
 			app.UseMvc(routes =>
     		   {
     			   routes.MapRoute(

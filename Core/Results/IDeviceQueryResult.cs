@@ -14,4 +14,16 @@ namespace Core.Results
 	{
 		public IotDevice Device { get; set; }
 	}
+
+
+	public interface IDevicesQueryResult
+	{
+		IEnumerable<IotDevice> Devices { get; set; }
+	}
+
+	public class DevicesQueryResult : IDevicesQueryResult
+	{
+		public IEnumerable<IotDevice> Devices { get; set; }
+	}
+
 }

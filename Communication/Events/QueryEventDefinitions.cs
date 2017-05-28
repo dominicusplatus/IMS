@@ -5,7 +5,10 @@ namespace Communication.Events
     {
         QueryDeviceRequestStarted = 1,
         QueryDeviceResponseReady,
-        QueryDeviceResponseError
+        QueryDeviceResponseError,
+        UpdateDeviceRequestStarted,
+        UpdateDeviceRequestReady,
+        UpdateDeviceRequestError
     }
 
     public interface IRequestEventDefinition              

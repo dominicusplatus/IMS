@@ -8,6 +8,8 @@
     <Folder Include="wwwroot\" />
     <Folder Include="Dependency\" />
     <Folder Include="ClientApp\" />
+    <Folder Include="ClientApp\app\components\login\" />
+    <Folder Include="ClientApp\app\data\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Autofac" Version="4.5.0" />
@@ -29,6 +31,7 @@
     <PackageReference Include="Microsoft.AspNetCore.SpaServices" Version="1.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics" Version="1.1.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="1.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="1.1.2" />
   </ItemGroup>
   <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Tools" Version="1.0.1" />
@@ -41,6 +44,15 @@
     <ProjectReference Include="..\Authentication\Authentication.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
     <ProjectReference Include="..\Domain\IotDomain.csproj" />
+    <ProjectReference Include="..\Domain.Iot\Repository\IotDomainRepository\IotDomainRepository.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="wwwroot\89889688147bd7575d6327160d64e760.svg" />
+    <None Remove="wwwroot\main-client.js" />
+    <None Remove="wwwroot\main-client.js.map" />
+    <None Remove="wwwroot\vendor-manifest.json" />
+    <None Remove="wwwroot\vendor.css" />
+    <None Remove="wwwroot\vendor.js" />
+  </ItemGroup>
 </Project>

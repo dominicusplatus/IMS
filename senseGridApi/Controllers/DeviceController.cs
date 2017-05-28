@@ -29,9 +29,38 @@ namespace senseGridApp.Controllers
 
         // GET api/values
         [HttpGet]
-        public IEnumerable<string> Get()
+        public IEnumerable<IotDevice> Get()
         {
-            return new string[] { "value1", "value2" };
+			IConcreteRequest request = new ConcreteDataQueryRequest();
+			request.Lifetime = 1000;
+			request.Id = Guid.NewGuid().ToString();
+			request.ExceptsResults = true;
+			request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
+			request.SetExpectedPrototype(new DeviceQueryResult());
+
+			var devices = new List<IotDevice>();
+			var response = _concreteHandler.HandleRequest(request);
+			try
+			{
+				var responseConrete = response as ConcreteDataQueryResponse;
+ 				if (responseConrete != null)
+				{
+
+					if (responseConrete?.Result is DeviceQueryResult)
+					{
+                        devices.Add(((DeviceQueryResult)responseConrete.Result)?.Device);
+					}
+                    else if (responseConrete?.Result is DevicesQueryResult){
+                        return ((DevicesQueryResult)responseConrete.Result)?.Devices;
+                    }
+				}
+               
+                return devices.AsEnumerable();
+			}
+			catch (Exception ex)
+			{
+                return null;
+			}
         }
 
         // GET api/values/5
@@ -70,13 +99,13 @@ namespace senseGridApp.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]string value)
+        public void Post([FromBody]IotDevice device)
         {
         }
 
         // PUT api/values/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
+        public void Put(int id, [FromBody]IotDevice device)
         {
         }
 

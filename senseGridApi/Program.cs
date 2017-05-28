@@ -15,17 +15,17 @@ namespace senseGridApi
         {
             try
             {
-                
+                    /*
 				    var config = new ConfigurationBuilder()
 					.SetBasePath(Directory.GetCurrentDirectory())
 					.AddJsonFile("appsettings.json")
 					.Build();
-                    
+                    */
 
 				var host = new WebHostBuilder()
 					.UseKestrel()
 					.UseAutofac()
-					.UseUrls(config["serverBindingUrl"])
+					//.UseUrls(config["serverBindingUrl"])
 					.UseContentRoot(Directory.GetCurrentDirectory())
 					.UseIISIntegration()
 					.UseStartup<Startup>()

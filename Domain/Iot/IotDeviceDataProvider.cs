@@ -6,6 +6,8 @@ using Core.POCO.Device;
 using Communication.Response;
 using Communication.Events.Query;
 using Communication.Events;
+using IotRepository;
+using DAL.Repository;
 
 namespace IotDomain.Iot
 {
@@ -13,16 +15,15 @@ namespace IotDomain.Iot
     {
         private IConcreteRequestEventRouter _router;
         private IConcreteResponseEventRouter _responseRouter;
+        private IIotRepository _repository;
 
-        public IotDeviceDataProvider()
-        {
-
-        }
-
-        public IotDeviceDataProvider(IConcreteRequestEventRouter requestrouter, IConcreteResponseEventRouter responserouter)
+        public IotDeviceDataProvider(IConcreteRequestEventRouter requestrouter, 
+                                     IConcreteResponseEventRouter responserouter,
+                                     IIotRepository repository)
         {
             _router = requestrouter;
             _responseRouter = responserouter;
+            _repository = repository;
             _router.Subscribe(RequestEventType.QueryDeviceRequestStarted,this);
         }
 
@@ -39,9 +40,8 @@ namespace IotDomain.Iot
         public void OnNext(IConcreteRequest value)
         {
             if(value!=null){
-                var result = new DeviceQueryResult();
-                result.Device = new IotDevice();
-                result.Device.Name = Guid.NewGuid().ToString();
+                var result = new DevicesQueryResult();
+                result.Devices = _repository.GetAll<IotDevice>().Result.Entities;
 
                 IConcreteResponse queryResponse = new ConcreteDataQueryResponse();
                 queryResponse.RequestEventDefinition = value.EventDefinition;

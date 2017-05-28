@@ -9,6 +9,7 @@
     <Folder Include="POCO\Site\" />
     <Folder Include="POCO\User\" />
     <Folder Include="Results\" />
+    <Folder Include="POCO\Result\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -6,10 +6,37 @@
 
   <ItemGroup>
     <Folder Include="Iot\" />
-    <Folder Include="Factory\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Communication\Communication.csproj" />
     <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Domain.Iot\Repository\IotDomainRepository\IotDomainRepository.csproj" />
+    <ProjectReference Include="..\DAL\DAL.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.AssemblyInfo.cs" />
+    <Compile Remove="IotRepository\IIotDeviceRepository.cs" />
+    <Compile Remove="IIotDeviceRepository.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\Authentication.dll" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\Authentication.pdb" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\ConfigurationTools.dll" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\ConfigurationTools.pdb" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\Core.dll" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\Core.pdb" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\DAL.dll" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\DAL.pdb" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\IotRepository.deps.json" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\IotRepository.dll" />
+    <None Remove="IotRepository\bin\Debug\netcoreapp1.1\IotRepository.pdb" />
+    <None Remove="IotRepository\obj\IotRepository.csproj.nuget.g.props" />
+    <None Remove="IotRepository\obj\IotRepository.csproj.nuget.g.targets" />
+    <None Remove="IotRepository\obj\project.assets.json" />
+    <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.csproj.CoreCompileInputs.cache" />
+    <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.csproj.FileListAbsolute.txt" />
+    <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.csprojResolveAssemblyReference.cache" />
+    <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.dll" />
+    <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.pdb" />
   </ItemGroup>
 </Project>
