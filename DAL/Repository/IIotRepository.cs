@@ -102,7 +102,6 @@ namespace DAL.Repository
 		/// <returns></returns>
 		Task<Result> DeleteMany<TEntity>(IEnumerable<string> ids) where TEntity : class, new();
 
-		#region Update
 		/// <summary>
 		/// UpdateOne by id
 		/// </summary>
@@ -138,7 +137,6 @@ namespace DAL.Repository
 		/// <param name="update"></param>
 		/// <returns></returns>
 		Task<Result> UpdateMany<TEntity>(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update) where TEntity : class, new();
-        #endregion Update
 
 
         /// <summary>
@@ -160,7 +158,7 @@ namespace DAL.Repository
 		/// <returns></returns>
 		Task<GetOneResult<TEntity>> GetAndUpdateOne<TEntity>(FilterDefinition<TEntity> filter, UpdateDefinition<TEntity> update, FindOneAndUpdateOptions<TEntity, TEntity> options) where TEntity : class, new();
 
-		#endregion Find And Update
+		
 	}
 
 }
