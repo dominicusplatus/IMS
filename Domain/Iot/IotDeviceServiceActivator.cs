@@ -46,23 +46,18 @@ namespace IotDomain.Iot
 			  Guid.NewGuid(),
 			  new DelegateActivator(swt.ServiceType, (c, p) =>
 				{
-			// In this example, the factory itself is assumed to be registered
-			// with Autofac, so we can resolve the factory. If you want to hard
-			// code the factory here, you can do that, too.
-			var provider = c.Resolve<IRequestResponseHandlerFactory>();
-
-			// Our factory interface is generic, so we have to use a bit of
-			// reflection to make the call.
-			var method = provider.GetType().GetMethod("GetHandler").MakeGenericMethod(swt.ServiceType);
-
-			// In the end, return the object from the factory.
-			return method.Invoke(provider, null);
-				}),
-			  new CurrentScopeLifetime(),
-			  InstanceSharing.None,
-			  InstanceOwnership.OwnedByLifetimeScope,
-			  new[] { service },
-			  new Dictionary<string, object>());
+					/*
+					var provider = c.Resolve<IRequestResponseHandlerFactory>();
+					var method = provider.GetType().GetMethod("GetHandler").MakeGenericMethod(swt.ServiceType)
+					return method.Invoke(provider, null);
+					*/
+					return c.Resolve(swt.ServiceType);
+    				}),
+    			  new CurrentScopeLifetime(),
+    			  InstanceSharing.None,
+    			  InstanceOwnership.OwnedByLifetimeScope,
+    			  new[] { service },
+    			  new Dictionary<string, object>());
 
 			return new IComponentRegistration[] { registration };
 		}

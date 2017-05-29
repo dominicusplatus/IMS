@@ -145,8 +145,8 @@ namespace senseGridApi
             //REQUIRED TO INJECT IConcreteRequestResponseProvider when not using  RegisterSource with IRequestResponseHandlerFactory
             //containerBuilder.RegisterType<IotDeviceDataProvider>().Named<IConcreteRequestResponseProvider>("handler");
             //containerBuilder.RegisterDecorator<IConcreteRequestResponseProvider>((c, inner) => new ConcreteRequestResponseProviderDecorator(inner),fromKey: "handler");
-            containerBuilder.RegisterType<IotDeviceDataProvider>();
-            containerBuilder.RegisterType<IotDeviceUpdateHandler>();
+            containerBuilder.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces();
+            containerBuilder.RegisterType<IotDeviceUpdateHandler>().AsImplementedInterfaces();
 
 
 			containerBuilder.RegisterType<MongoRepository>().AsImplementedInterfaces().InstancePerDependency();
