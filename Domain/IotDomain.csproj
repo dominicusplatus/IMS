@@ -12,6 +12,7 @@
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Domain.Iot\Repository\IotDomainRepository\IotDomainRepository.csproj" />
     <ProjectReference Include="..\DAL\DAL.csproj" />
+    <ProjectReference Include="..\Infrastracture\Infrastracture.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.AssemblyInfo.cs" />
@@ -38,5 +39,8 @@
     <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.csprojResolveAssemblyReference.cache" />
     <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.dll" />
     <None Remove="IotRepository\obj\Debug\netcoreapp1.1\IotRepository.pdb" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="4.6.0" />
   </ItemGroup>
 </Project>

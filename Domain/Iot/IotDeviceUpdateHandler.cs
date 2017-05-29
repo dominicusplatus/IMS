@@ -9,9 +9,12 @@ using Communication.Events;
 using IotRepository;
 using MongoDB.Driver;
 using MongoDB.Bson;
+using Communication.Attributes;
 
 namespace IotDomain.Iot
 {
+
+    [EventSubscriber(RequestEventType.UpdateDeviceRequestStarted)]
 	public class IotDeviceUpdateHandler : IConcreteRequestResponseProvider
 	{
 		private IConcreteRequestEventRouter _router;

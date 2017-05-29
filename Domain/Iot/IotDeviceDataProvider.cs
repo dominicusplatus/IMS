@@ -8,9 +8,12 @@ using Communication.Events.Query;
 using Communication.Events;
 using IotRepository;
 using DAL.Repository;
+using Communication.Attributes;
 
 namespace IotDomain.Iot
 {
+    
+	[EventSubscriber(RequestEventType.QueryDeviceRequestStarted)]
     public class IotDeviceDataProvider : IConcreteRequestResponseProvider
     {
         private IConcreteRequestEventRouter _router;

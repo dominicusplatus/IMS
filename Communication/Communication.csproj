@@ -13,5 +13,9 @@
     <Folder Include="Events\Query\" />
     <Folder Include="Routing\" />
     <Folder Include="Response\" />
+    <Folder Include="Attributes\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.PlatformAbstractions" Version="1.1.0" />
   </ItemGroup>
 </Project>

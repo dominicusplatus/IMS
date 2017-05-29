@@ -1,6 +1,10 @@
 ﻿using System;
+using System.ComponentModel;
+using Communication.Attributes;
+
 namespace Communication.Events
 {
+
     public class DeviceQueryRequestEvent : IRequestEventDefinition
     {
         public RequestEventType EventType { get; set; }
