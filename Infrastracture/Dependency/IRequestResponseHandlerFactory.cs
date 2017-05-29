@@ -8,7 +8,7 @@ namespace Infrastracture.Dependency
 		T GetHandler<T>() where T : IConcreteRequestResponseProvider;
 	}
 
-	public class HandlerFactory : IRequestResponseHandlerFactory
+	public class RequestResponseHandlerFactory : IRequestResponseHandlerFactory
 	{
 		public T GetHandler<T>() where T : IConcreteRequestResponseProvider
 		{

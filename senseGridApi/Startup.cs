@@ -32,6 +32,7 @@ using Microsoft.AspNetCore.SpaServices.Webpack;
 using IotDomain.Iot;
 using IotRepository;
 using DAL.Repository.Mongo;
+using Infrastracture.Dependency;
 
 namespace senseGridApi
 {
@@ -141,10 +142,17 @@ namespace senseGridApi
 			containerBuilder.RegisterType<TransientConcreteResponseEventRouter>().AsImplementedInterfaces().InstancePerLifetimeScope();
             containerBuilder.RegisterType<BasicRequestHandler>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
-			containerBuilder.RegisterType<IotDeviceDataProvider>().Named<IConcreteRequestResponseProvider>("handler");
-			containerBuilder.RegisterDecorator<IConcreteRequestResponseProvider>((c, inner) => new ConcreteRequestResponseProviderDecorator(inner),fromKey: "handler");
+            //REQUIRED TO INJECT IConcreteRequestResponseProvider when not using  RegisterSource with IRequestResponseHandlerFactory
+            //containerBuilder.RegisterType<IotDeviceDataProvider>().Named<IConcreteRequestResponseProvider>("handler");
+            //containerBuilder.RegisterDecorator<IConcreteRequestResponseProvider>((c, inner) => new ConcreteRequestResponseProviderDecorator(inner),fromKey: "handler");
+            containerBuilder.RegisterType<IotDeviceDataProvider>();
+            containerBuilder.RegisterType<IotDeviceUpdateHandler>();
 
-            containerBuilder.RegisterType<MongoRepository>().AsImplementedInterfaces().InstancePerDependency();
+
+			containerBuilder.RegisterType<MongoRepository>().AsImplementedInterfaces().InstancePerDependency();
+
+			containerBuilder.RegisterType<RequestResponseHandlerFactory>().As<IRequestResponseHandlerFactory>();
+			containerBuilder.RegisterSource(new IotDeviceServiceActivator());
 
             //containerBuilder.RegisterType<IotDeviceDataProvider>().AsSelf().InstancePerRequest();
 

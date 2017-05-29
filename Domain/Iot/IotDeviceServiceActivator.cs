@@ -19,6 +19,11 @@ namespace IotDomain.Iot
     {
         private IContainer _existingContainer;
 
+        public IotDeviceServiceActivator()
+        {
+
+        }
+
         public IotDeviceServiceActivator(IContainer existingContainer)
         {
             _existingContainer = existingContainer;
@@ -97,23 +102,6 @@ namespace IotDomain.Iot
 
     }
 
-	public class ImmediateEventServicesActivator : IEventServicesActivator
-	{
 
-		public IEnumerable<Lazy<IRequestEventDefinition, IService>> serviceEventRegistrations;
-
-		public void ActivateForEvent(IRequestEventDefinition eventDefnition)
-		{
-			/*
-            var libs = PlatformServices.Default.LibraryManager.GetReferencingLibraries("myLib")
-            .SelectMany(info => info.Assemblies)
-            .Select(info => Assembly.Load(new AssemblyName(info.Name)));
-            */
-			// [EventSubscriber(RequestEventType.UpdateDeviceRequestStarted)]
-
-			Type clsType = typeof(IotDeviceDataProvider);
-
-		}
-	}
 
 }
