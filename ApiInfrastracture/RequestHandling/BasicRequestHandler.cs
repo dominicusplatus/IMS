@@ -9,6 +9,7 @@ using Communication.Events.Query;
 using Communication.Requests;
 using Communication.Response;
 using Communication.Routing;
+using Infrastracture.Dependency;
 
 namespace ApiInfrastracture.RequestHandling
 {
@@ -78,22 +79,26 @@ namespace ApiInfrastracture.RequestHandling
         private IConcreteRequestEventRouter _router;
         private IConcreteResponseEventRouter _responseRouter;
         private List<TransientRequestState> _requestStates;
-        private IConcreteRequestResponseProvider _responseProvider;
+       // private IConcreteRequestResponseProvider _responseProvider;
+        private IEventServicesActivator _eventActivator;
 
-        public BasicRequestHandler(IConcreteRequestEventRouter router, 
+        public BasicRequestHandler(IConcreteRequestEventRouter router,
                                    IConcreteResponseEventRouter responseRouter,
-                                   IConcreteRequestResponseProvider responseProvider
+                                  // IConcreteRequestResponseProvider responseProvider,
+                                   IEventServicesActivator eventActivator
                                   )
         {
             _router = router;
             _responseRouter = responseRouter;
 			_requestStates = new List<TransientRequestState>();
-            _responseProvider = responseProvider;
+           // _responseProvider = responseProvider;
+            _eventActivator = eventActivator;
 			_responseRouter.Subscribe(ResponseEventType.QueryDeviceResponseReady, this );
         }
 
         public object HandleRequest(IConcreteRequest request)
         {
+            _eventActivator.ActivateForEvent(request.EventDefinition);
             var autoEvent = new AutoResetEvent(false);
             TransientRequestState state = new TransientRequestState(request,autoEvent);
             _requestStates.Add(state);

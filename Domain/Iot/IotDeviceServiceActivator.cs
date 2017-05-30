@@ -17,16 +17,14 @@ namespace IotDomain.Iot
 {
     public class IotDeviceServiceActivator : IEventServicesActivator
     {
-        private IContainer _existingContainer;
+		// private IContainer _existingContainer;
+		private IComponentContext _context;
+        private List<object> RegisteredHandlers;
 
-        public IotDeviceServiceActivator()
+        public IotDeviceServiceActivator(IComponentContext context)
         {
-
-        }
-
-        public IotDeviceServiceActivator(IContainer existingContainer)
-        {
-            _existingContainer = existingContainer;
+            _context = context;
+            RegisteredHandlers = new List<object>();
         }
 
 
@@ -51,6 +49,7 @@ namespace IotDomain.Iot
 					var method = provider.GetType().GetMethod("GetHandler").MakeGenericMethod(swt.ServiceType)
 					return method.Invoke(provider, null);
 					*/
+
 					return c.Resolve(swt.ServiceType);
     				}),
     			  new CurrentScopeLifetime(),
@@ -72,17 +71,21 @@ namespace IotDomain.Iot
                     var attrAsEventAttribute = attr as EventSubscriberAttribute;
                     if(attrAsEventAttribute !=null){
                         if(attrAsEventAttribute.EventType == type){
+							RegisteredHandlers.Add(_context.Resolve(serviceType));
+                            /*
 							var updater = new ContainerBuilder();
-                            if(serviceType == typeof(IotDeviceDataProvider) ){
-								updater.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces();
+							if(serviceType == typeof(IotDeviceDataProvider) ){
+                                updater.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces();
                             }else if(serviceType == typeof(IotDeviceUpdateHandler)){
                                 updater.RegisterType<IotDeviceUpdateHandler>().AsImplementedInterfaces();
                             }
 							updater.Update(_existingContainer);
+							*/
                         }
                     }
                 }
             }
+          
         }
 
 

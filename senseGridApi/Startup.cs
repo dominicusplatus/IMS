@@ -142,23 +142,28 @@ namespace senseGridApi
 			containerBuilder.RegisterType<TransientConcreteResponseEventRouter>().AsImplementedInterfaces().InstancePerLifetimeScope();
             containerBuilder.RegisterType<BasicRequestHandler>().AsImplementedInterfaces().InstancePerLifetimeScope();
 
-            //REQUIRED TO INJECT IConcreteRequestResponseProvider when not using  RegisterSource with IRequestResponseHandlerFactory
-            //containerBuilder.RegisterType<IotDeviceDataProvider>().Named<IConcreteRequestResponseProvider>("handler");
-            //containerBuilder.RegisterDecorator<IConcreteRequestResponseProvider>((c, inner) => new ConcreteRequestResponseProviderDecorator(inner),fromKey: "handler");
-            containerBuilder.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces();
-            containerBuilder.RegisterType<IotDeviceUpdateHandler>().AsImplementedInterfaces();
+			//REQUIRED TO INJECT IConcreteRequestResponseProvider when not using  RegisterSource with IRequestResponseHandlerFactory
+			//containerBuilder.RegisterType<IotDeviceDataProvider>().Named<IConcreteRequestResponseProvider>("handler");
+			//containerBuilder.RegisterDecorator<IConcreteRequestResponseProvider>((c, inner) => new ConcreteRequestResponseProviderDecorator(inner),fromKey: "handler");
+			
+            //containerBuilder.RegisterType<RequestResponseHandlerFactory>().As<IRequestResponseHandlerFactory>();
+			//containerBuilder.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces();
+			//containerBuilder.RegisterType<IotDeviceUpdateHandler>().AsImplementedInterfaces();
+			containerBuilder.RegisterType<IotDeviceDataProvider>();
+            containerBuilder.RegisterType<IotDeviceUpdateHandler>();
 
-
+            containerBuilder.RegisterType<IotDeviceServiceActivator>().AsImplementedInterfaces().InstancePerDependency();
 			containerBuilder.RegisterType<MongoRepository>().AsImplementedInterfaces().InstancePerDependency();
 
-			containerBuilder.RegisterType<RequestResponseHandlerFactory>().As<IRequestResponseHandlerFactory>();
-			containerBuilder.RegisterSource(new IotDeviceServiceActivator());
-
-            //containerBuilder.RegisterType<IotDeviceDataProvider>().AsSelf().InstancePerRequest();
 
 
+			//containerBuilder.RegisterSource(new IotDeviceServiceActivator());
 
-            /*
+			//containerBuilder.RegisterType<IotDeviceDataProvider>().AsSelf().InstancePerRequest();
+
+
+
+			/*
             var builder = new ContainerBuilder();
             builder.RegisterModule(new AutofacModule());
             builder.Populate(services);
