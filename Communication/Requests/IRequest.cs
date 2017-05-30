@@ -21,9 +21,9 @@ namespace Communication.Requests
 		string Id { get; set; }
 		string Message { get; set; }
 		int Lifetime { get; set; }
+        object Parameter { get; set; }
         IRequestEventDefinition EventDefinition { get; set; }
 		bool ExceptsResults { get; set; }
-		IConcreteDataQuery GetCommandParameter();
 		void SetExpectedPrototype(object prototype);
 	}
 }

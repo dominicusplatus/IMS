@@ -30,7 +30,6 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using AspNet.Security.OpenIdConnect.Primitives;
 using Microsoft.AspNetCore.SpaServices.Webpack;
 using IotDomain.Iot;
-using IotRepository;
 using DAL.Repository.Mongo;
 using Infrastracture.Dependency;
 

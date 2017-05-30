@@ -72,15 +72,6 @@ namespace IotDomain.Iot
                     if(attrAsEventAttribute !=null){
                         if(attrAsEventAttribute.EventType == type){
 							RegisteredHandlers.Add(_context.Resolve(serviceType));
-                            /*
-							var updater = new ContainerBuilder();
-							if(serviceType == typeof(IotDeviceDataProvider) ){
-                                updater.RegisterType<IotDeviceDataProvider>().AsImplementedInterfaces();
-                            }else if(serviceType == typeof(IotDeviceUpdateHandler)){
-                                updater.RegisterType<IotDeviceUpdateHandler>().AsImplementedInterfaces();
-                            }
-							updater.Update(_existingContainer);
-							*/
                         }
                     }
                 }

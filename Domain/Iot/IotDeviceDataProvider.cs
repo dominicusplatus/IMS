@@ -6,7 +6,6 @@ using Core.POCO.Device;
 using Communication.Response;
 using Communication.Events.Query;
 using Communication.Events;
-using IotRepository;
 using DAL.Repository;
 using Communication.Attributes;
 

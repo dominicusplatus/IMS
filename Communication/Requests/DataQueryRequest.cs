@@ -30,14 +30,10 @@ namespace Communication.Requests
 		public string Message { get; set; }
 		public int Lifetime { get; set; }
 		public bool ExceptsResults { get; set; }
+        public object Parameter { get; set; }
         public IRequestEventDefinition EventDefinition { get; set; }
         public IConcreteDataQuery DataQuery { get; set; }
         public object Prototype  { get;  set; }
-
-        public IConcreteDataQuery GetCommandParameter()
-		{
-            return DataQuery;
-		}
 
 		public void SetExpectedPrototype(object prototype)
 		{

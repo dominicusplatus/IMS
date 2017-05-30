@@ -101,6 +101,29 @@ namespace senseGridApp.Controllers
         [HttpPost]
         public void Post([FromBody]IotDevice device)
         {
+			IConcreteRequest request = new ConcreteDataQueryRequest();
+			request.Lifetime = 1000;
+			request.Id = Guid.NewGuid().ToString();
+            request.ExceptsResults = false;
+			request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.UpdateDeviceRequestStarted, Guid.NewGuid().ToString());
+			request.SetExpectedPrototype(true);
+            request.Parameter = device;
+
+			var response = _concreteHandler.HandleRequest(request);
+			try
+			{
+				var responseConrete = response as ConcreteDataQueryResponse;
+				if (responseConrete != null)
+				{
+
+					
+				}
+
+			}
+			catch (Exception ex)
+			{
+				
+			}
         }
 
         // PUT api/values/5

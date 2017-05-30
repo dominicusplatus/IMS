@@ -6,10 +6,10 @@ using Core.POCO.Device;
 using Communication.Response;
 using Communication.Events.Query;
 using Communication.Events;
-using IotRepository;
 using MongoDB.Driver;
 using MongoDB.Bson;
 using Communication.Attributes;
+using DAL.Repository;
 
 namespace IotDomain.Iot
 {
@@ -19,16 +19,11 @@ namespace IotDomain.Iot
 	{
 		private IConcreteRequestEventRouter _router;
 		private IConcreteResponseEventRouter _responseRouter;
-		private IIotDeviceRepository _repository;
-
-		public IotDeviceUpdateHandler()
-		{
-
-		}
+		private IIotRepository _repository;
 
 		public IotDeviceUpdateHandler(IConcreteRequestEventRouter requestrouter, 
                                       IConcreteResponseEventRouter responserouter,
-									  IIotDeviceRepository repository)
+									  IIotRepository repository)
 		{
 			_router = requestrouter;
 			_responseRouter = responserouter;
@@ -46,17 +41,17 @@ namespace IotDomain.Iot
 
 		}
 
-		public void OnNext(IConcreteRequest value)
+		public void OnNext(IConcreteRequest request)
 		{
-			if (value != null)
+			if (request != null)
 			{
 				IConcreteResponse queryResponse = new ConcreteDataQueryResponse();
-				queryResponse.RequestEventDefinition = value.EventDefinition;
+				queryResponse.RequestEventDefinition = request.EventDefinition;
 				queryResponse.Id = Guid.NewGuid().ToString();
 				queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.UpdateDeviceResponseStarted, Guid.NewGuid().ToString());
                 queryResponse.Result = false;
 
-                IotDevice updated = value.GetCommandParameter() as IotDevice;
+                IotDevice updated = request.Parameter as IotDevice;
                 if(updated!=null){
 					//var replacement = Builders<BsonDocument>.Update<IotDevice>.Replace(updated);
                     var filter = Builders<IotDevice>.Filter.Eq(s => s.Id, updated.Id);

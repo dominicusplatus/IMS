@@ -8,9 +8,6 @@ using MongoDB.Driver;
 
 namespace IotRepository
 {
-    public interface IIotDeviceRepository : IIotRepository
-    {
 
-    }
 
 }
