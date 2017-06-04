@@ -9,7 +9,9 @@ using Communication.Events.Query;
 using Communication.Requests;
 using Communication.Response;
 using Communication.Routing;
+using Communication.Events;
 using Infrastracture.Dependency;
+using System.Threading.Tasks;
 
 namespace ApiInfrastracture.RequestHandling
 {
@@ -79,7 +81,6 @@ namespace ApiInfrastracture.RequestHandling
         private IConcreteRequestEventRouter _router;
         private IConcreteResponseEventRouter _responseRouter;
         private List<TransientRequestState> _requestStates;
-       // private IConcreteRequestResponseProvider _responseProvider;
         private IEventServicesActivator _eventActivator;
 
         public BasicRequestHandler(IConcreteRequestEventRouter router,
@@ -91,18 +92,19 @@ namespace ApiInfrastracture.RequestHandling
             _responseRouter = responseRouter;
 			_requestStates = new List<TransientRequestState>();
             _eventActivator = eventActivator;
-			_responseRouter.Subscribe(ResponseEventType.QueryDeviceResponseReady, this );
-            _responseRouter.Subscribe(ResponseEventType.UpdateDeviceResponseReady, this);
         }
 
         public object HandleRequest(IConcreteRequest request)
         {
+            _responseRouter.Subscribe(RequestResponseEventTypeResolver.GetResponseTypeForRequest(request.EventDefinition.EventType), this);
+
             _eventActivator.ActivateForEvent(request.EventDefinition);
             var autoEvent = new AutoResetEvent(false);
             TransientRequestState state = new TransientRequestState(request,autoEvent);
             _requestStates.Add(state);
 
-			_router.Publish(request);
+            Task.Factory.StartNew(() => { _router.Publish(request); });
+			
 
             var processed = autoEvent.WaitOne(request.Lifetime);
             if(state.Response != null){

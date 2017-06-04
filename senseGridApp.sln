@@ -51,6 +51,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "senseGridDeviceRuntime", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IotDomainRepository", "Domain.Iot\Repository\IotDomainRepository\IotDomainRepository.csproj", "{8FE9E878-F128-4000-9D1E-40B4290F39C5}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "senseGridWeb", "senseGridWeb\senseGridWeb.csproj", "{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -265,6 +267,18 @@ Global
 		{8FE9E878-F128-4000-9D1E-40B4290F39C5}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{8FE9E878-F128-4000-9D1E-40B4290F39C5}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{8FE9E878-F128-4000-9D1E-40B4290F39C5}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Release|iPhone.Build.0 = Release|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -298,5 +312,6 @@ Global
 		{757DDB0E-22E2-4957-8BC8-E4185FD589EA} = {AFD78297-A3F9-456A-A7AB-BA7E9E5D589F}
 		{AA8A8150-3C21-45E3-882B-174E6CA0A031} = {AFD78297-A3F9-456A-A7AB-BA7E9E5D589F}
 		{8FE9E878-F128-4000-9D1E-40B4290F39C5} = {BE02D0D5-F5F3-4923-A406-7BA60E456E6A}
+		{9A15029B-2D23-4CDA-9DB4-AF50AF4EAE40} = {AFD78297-A3F9-456A-A7AB-BA7E9E5D589F}
 	EndGlobalSection
 EndGlobal

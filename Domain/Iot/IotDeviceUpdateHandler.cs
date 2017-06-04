@@ -54,7 +54,7 @@ namespace IotDomain.Iot
 				IConcreteResponse queryResponse = new ConcreteDataQueryResponse();
 				queryResponse.RequestEventDefinition = request.EventDefinition;
 				queryResponse.Id = Guid.NewGuid().ToString();
-				queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.UpdateDeviceResponseStarted, Guid.NewGuid().ToString());
+				queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.UpdateDeviceResponseReady, Guid.NewGuid().ToString());
                 queryResponse.Result = false;
 
                 BaseUserEvent userEvent = new BaseUserEvent();

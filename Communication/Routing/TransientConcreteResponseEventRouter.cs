@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Communication.Events;
 using Communication.Events.Query;
 using Communication.Response;
+using System.Threading.Tasks;
 
 namespace Communication.Routing
 {
@@ -37,7 +38,7 @@ namespace Communication.Routing
 					{
 						foreach (var item in targetSubscriptions)
 						{
-							item.OnNext(request);
+                            Task.Factory.StartNew(() => { item.OnNext(request); });
 						}
 					}
 				}

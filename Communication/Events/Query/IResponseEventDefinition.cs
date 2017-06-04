@@ -8,7 +8,11 @@ namespace Communication.Events.Query
 		QueryDeviceResponseError,
 		UpdateDeviceResponseStarted,
 		UpdateDeviceResponseReady,
-		UpdateDeviceResponseError
+		UpdateDeviceResponseError,
+
+        GenericResponseStarted,
+        GenericResponseError,
+        GenericResponseReady,
 	}
 
     public interface IResponseEventDefinition : IUserEvent
