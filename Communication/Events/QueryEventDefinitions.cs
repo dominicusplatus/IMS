@@ -11,20 +11,19 @@ namespace Communication.Events
         UpdateDeviceRequestError
     }
 
-    public interface IRequestEventDefinition              
+    public interface IEventDefinition 
     {
-        RequestEventType EventType
-        {
-            get;
-            set;
-        }
+		RequestEventType EventType { get; set; }
 
-        string Id
-        {
-            get;
-            set;
-        }                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
-     }
+		string Id { get; set; }
+	}
+
+    public interface IRequestEventDefinition  : IUserEvent       
+    {
+		RequestEventType EventType { get; set; }
+
+		string Id { get; set; }
+	}
 
 
 }

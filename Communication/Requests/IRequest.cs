@@ -16,14 +16,13 @@ namespace Communication.Requests
         void SetExpectedPrototype(TPout prototype);
     }
 
-	public interface IConcreteRequest
+    public interface IConcreteRequest 
 	{
 		string Id { get; set; }
 		string Message { get; set; }
 		int Lifetime { get; set; }
+        object Prototype { get; set; }
         object Parameter { get; set; }
         IRequestEventDefinition EventDefinition { get; set; }
-		bool ExceptsResults { get; set; }
-		void SetExpectedPrototype(object prototype);
 	}
 }

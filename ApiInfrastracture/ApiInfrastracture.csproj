@@ -11,6 +11,7 @@
   <ItemGroup>
     <PackageReference Include="Polly" Version="5.1.0" />
     <PackageReference Include="Autofac" Version="4.6.0" />
+    <PackageReference Include="MediatR" Version="3.0.1" />
   </ItemGroup>
 
   <ItemGroup>

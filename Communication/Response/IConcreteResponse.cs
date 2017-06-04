@@ -8,11 +8,10 @@ namespace Communication.Response
     {
 		string Id { get; set; }
 		object Result { get; set; }
+        object Prototype { get; set; }
 		int Lifetime { get; set; }
 		IRequestEventDefinition RequestEventDefinition { get; set; }
         IResponseEventDefinition ResponseEventDefinition { get; set; }
-		bool ExceptsResults { get; set; }
-		object GetExpectedPrototype();
     }
 
 }

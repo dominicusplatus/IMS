@@ -32,11 +32,9 @@ namespace senseGridApp.Controllers
         public IEnumerable<IotDevice> Get()
         {
 			IConcreteRequest request = new ConcreteDataQueryRequest();
-			request.Lifetime = 1000;
-			request.Id = Guid.NewGuid().ToString();
-			request.ExceptsResults = true;
-			request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
-			request.SetExpectedPrototype(new DeviceQueryResult());
+			request.Lifetime = 180;
+			request.Id = Guid.NewGuid().ToString();request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
+            request.Prototype = new DeviceQueryResult();
 
 			var devices = new List<IotDevice>();
 			var response = _concreteHandler.HandleRequest(request);
@@ -68,12 +66,10 @@ namespace senseGridApp.Controllers
         public IotDevice Get(int id)
         {
             IConcreteRequest request = new ConcreteDataQueryRequest();
-            request.Lifetime = 1000;
+            request.Lifetime = 180;
             request.Id = Guid.NewGuid().ToString();
-            request.ExceptsResults = true;
             request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
-            request.SetExpectedPrototype(new DeviceQueryResult());
-
+            request.Prototype = new DeviceQueryResult();
             var response = _concreteHandler.HandleRequest(request);
             try
             {
@@ -102,11 +98,10 @@ namespace senseGridApp.Controllers
         public void Post([FromBody]IotDevice device)
         {
 			IConcreteRequest request = new ConcreteDataQueryRequest();
-			request.Lifetime = 1000;
+			request.Lifetime = 180;
 			request.Id = Guid.NewGuid().ToString();
-            request.ExceptsResults = false;
 			request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.UpdateDeviceRequestStarted, Guid.NewGuid().ToString());
-			request.SetExpectedPrototype(true);
+			request.Prototype = true;
             request.Parameter = device;
 
 			var response = _concreteHandler.HandleRequest(request);

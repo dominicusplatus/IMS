@@ -11,19 +11,12 @@ namespace Communication.Events.Query
 		UpdateDeviceResponseError
 	}
 
-	public interface IResponseEventDefinition
+    public interface IResponseEventDefinition : IUserEvent
 	{
-		ResponseEventType EventType
-		{
-			get;
-			set;
-		}
+		ResponseEventType EventType { get; set; }
 
-		string Id
-		{
-			get;
-			set;
-		}
+		string Id { get; set; }
+
 	}
 
 }

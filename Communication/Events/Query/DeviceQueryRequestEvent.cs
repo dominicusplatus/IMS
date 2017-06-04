@@ -9,6 +9,8 @@ namespace Communication.Events
     {
         public RequestEventType EventType { get; set; }
         public string Id { get; set; }
+        public string Domain { get; set; }
+        public string User { get; set; }
 
         public DeviceQueryRequestEvent(RequestEventType type, string id)
         {

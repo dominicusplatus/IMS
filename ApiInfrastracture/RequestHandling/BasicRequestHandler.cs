@@ -84,16 +84,15 @@ namespace ApiInfrastracture.RequestHandling
 
         public BasicRequestHandler(IConcreteRequestEventRouter router,
                                    IConcreteResponseEventRouter responseRouter,
-                                  // IConcreteRequestResponseProvider responseProvider,
                                    IEventServicesActivator eventActivator
                                   )
         {
             _router = router;
             _responseRouter = responseRouter;
 			_requestStates = new List<TransientRequestState>();
-           // _responseProvider = responseProvider;
             _eventActivator = eventActivator;
 			_responseRouter.Subscribe(ResponseEventType.QueryDeviceResponseReady, this );
+            _responseRouter.Subscribe(ResponseEventType.UpdateDeviceResponseReady, this);
         }
 
         public object HandleRequest(IConcreteRequest request)

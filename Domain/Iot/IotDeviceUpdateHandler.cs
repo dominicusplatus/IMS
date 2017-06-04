@@ -41,6 +41,12 @@ namespace IotDomain.Iot
 
 		}
 
+        private bool StoreEvent(BaseUserEvent userEvent)
+        {
+			var storeResult = _repository.AddOne<BaseUserEvent>(userEvent);
+            return storeResult.Result.Success;
+        }
+
 		public void OnNext(IConcreteRequest request)
 		{
 			if (request != null)
@@ -51,15 +57,22 @@ namespace IotDomain.Iot
 				queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.UpdateDeviceResponseStarted, Guid.NewGuid().ToString());
                 queryResponse.Result = false;
 
+                BaseUserEvent userEvent = new BaseUserEvent();
+                userEvent.User = request.EventDefinition.User;
+                userEvent.EventType = (int)request.EventDefinition.EventType;
+                userEvent.Payload = request.Parameter;
+                StoreEvent(userEvent);
+
+                /*
                 IotDevice updated = request.Parameter as IotDevice;
                 if(updated!=null){
-					//var replacement = Builders<BsonDocument>.Update<IotDevice>.Replace(updated);
                     var filter = Builders<IotDevice>.Filter.Eq(s => s.Id, updated.Id);
                     var replaceResult = _repository.ReplaceOne<IotDevice>(updated.Id,filter,updated,true);
                     if(replaceResult.ModifiedCount > 0){
                         queryResponse.Result = true;
                     }
                 }
+                */
 
 				_responseRouter.Publish(queryResponse);
 

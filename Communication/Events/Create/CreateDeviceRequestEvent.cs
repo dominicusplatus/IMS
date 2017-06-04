@@ -5,8 +5,10 @@ namespace Communication.Events.Create
 	{
 		public RequestEventType EventType { get; set; }
 		public string Id { get; set; }
+        public string Domain { get; set; }
+        public string User { get; set; }
 
-		public CreateDeviceRequestEvent(RequestEventType type, string id)
+        public CreateDeviceRequestEvent(RequestEventType type, string id)
 		{
 			EventType = type;
 			Id = id;

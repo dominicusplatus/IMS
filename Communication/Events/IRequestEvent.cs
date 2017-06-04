@@ -23,8 +23,29 @@ namespace Communication.Events
         }
     }
 
-    public interface IRequestEvent
+    public interface IUserEvent
     {
-        
+        string Domain { get; set; }
+
+		string User { get; set; }
     }
+
+    public interface IConcreteUserEvent : IUserEvent
+    {
+		 int EventType { get; set; }
+
+		 object Payload { get; set; }
+    }
+
+    public class BaseUserEvent : IConcreteUserEvent
+	{
+		public string Domain { get; set; }
+
+		public string User { get; set; }
+
+        public int EventType { get; set; }
+
+        public object Payload { get; set; }
+	}
+
 }

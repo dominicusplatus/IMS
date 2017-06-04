@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Folder Include="Iot\" />
+    <Folder Include="Location\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Communication\Communication.csproj" />
