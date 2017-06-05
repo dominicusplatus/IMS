@@ -10,7 +10,11 @@ namespace Communication.Events
                 return ResponseEventType.QueryDeviceResponseReady;
             }else if (requestType == RequestEventType.UpdateDeviceRequestStarted){
                 return ResponseEventType.UpdateDeviceResponseReady;
-            }
+			}
+			else if (requestType == RequestEventType.QueryDeviceByIdRequestStarted)
+			{
+				return ResponseEventType.QueryDeviceByIdResponseReady;
+			}
             return ResponseEventType.GenericResponseReady;
         }
     }

@@ -8,11 +8,13 @@ using Communication.Events.Query;
 using Communication.Events;
 using DAL.Repository;
 using Communication.Attributes;
+using System.Collections.Generic;
 
 namespace IotDomain.Iot
 {
     
 	[EventSubscriber(RequestEventType.QueryDeviceRequestStarted)]
+    [EventSubscriber(RequestEventType.QueryDeviceByIdRequestStarted)]
     public class IotDeviceDataProvider : IConcreteRequestResponseProvider
     {
         private IConcreteRequestEventRouter _router;
@@ -36,22 +38,55 @@ namespace IotDomain.Iot
 
         public void OnError(Exception error)
         {
-           
+
         }
 
-        public void OnNext(IConcreteRequest value)
+        private IEnumerable<IotDevice> GetDevices(string user)
         {
-            if(value!=null){
-                var result = new DevicesQueryResult();
-                result.Devices = _repository.GetAll<IotDevice>().Result.Entities;
+			var result = new DevicesQueryResult();
+			return _repository.GetAll<IotDevice>().Result.Entities;
+        }
 
-                IConcreteResponse queryResponse = new ConcreteDataQueryResponse();
-                queryResponse.RequestEventDefinition = value.EventDefinition;
-                queryResponse.Id = Guid.NewGuid().ToString();
-                queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.QueryDeviceResponseReady,Guid.NewGuid().ToString());
-                queryResponse.Result = result;
-                _responseRouter.Publish(queryResponse);
+        private IotDevice GetDeviceById(string id, string user)
+        {
+			return _repository.GetOne<IotDevice>(id).Result.Entity;
+        }
 
+        private void HandleGetAllEvent(IConcreteRequest request)
+        {
+			var result = new DevicesQueryResult();
+			result.Devices = GetDevices(request.EventDefinition.User);
+
+			IConcreteResponse queryResponse = new ConcreteDataQueryResponse();
+			queryResponse.RequestEventDefinition = request.EventDefinition;
+			queryResponse.Id = Guid.NewGuid().ToString();
+			queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.QueryDeviceResponseReady, Guid.NewGuid().ToString());
+			queryResponse.Result = result;
+			_responseRouter.Publish(queryResponse);
+        }
+
+		private void HandleGetEvent(IConcreteRequest request)
+		{
+			var result = new DeviceQueryResult();
+			result.Device = GetDeviceById((string)request.Parameter, request.EventDefinition.User);
+
+			IConcreteResponse queryResponse = new ConcreteDataQueryResponse();
+			queryResponse.RequestEventDefinition = request.EventDefinition;
+			queryResponse.Id = Guid.NewGuid().ToString();
+			queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.QueryDeviceByIdResponseReady, Guid.NewGuid().ToString());
+			queryResponse.Result = result;
+			_responseRouter.Publish(queryResponse);
+		}
+
+        public void OnNext(IConcreteRequest request)
+        {
+            if(request !=null){
+                if(request.EventDefinition.EventType == RequestEventType.QueryDeviceRequestStarted){
+                    HandleGetAllEvent(request);
+                }
+                else if(request.EventDefinition.EventType == RequestEventType.QueryDeviceByIdRequestStarted){
+                    HandleGetEvent(request);
+                }
             }
         }
     }

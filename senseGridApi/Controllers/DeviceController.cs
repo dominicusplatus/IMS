@@ -65,12 +65,13 @@ namespace senseGridApp.Controllers
 
         // GET api/values/5
         [HttpGet("{id}")]
-        public IotDevice Get(int id)
+        public IotDevice Get(string id)
         {
             IConcreteRequest request = new ConcreteDataQueryRequest();
             request.Lifetime = 1800;
             request.Id = Guid.NewGuid().ToString();
-            request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceRequestStarted, Guid.NewGuid().ToString());
+            request.Parameter = id;
+            request.EventDefinition = new DeviceQueryRequestEvent(RequestEventType.QueryDeviceByIdRequestStarted, Guid.NewGuid().ToString());
             request.Prototype = new DeviceQueryResult();
             request.EventDefinition.User = User.Identity.Name;
             var response = _concreteHandler.HandleRequest(request);
@@ -98,7 +99,7 @@ namespace senseGridApp.Controllers
 
         // POST api/values
         [HttpPost]
-        public void Post([FromBody]IotDevice device)
+        public string Post([FromBody]IotDevice device)
         {
 			IConcreteRequest request = new ConcreteDataQueryRequest();
 			request.Lifetime = 1800;
@@ -114,14 +115,13 @@ namespace senseGridApp.Controllers
 				var responseConrete = response as ConcreteDataQueryResponse;
 				if (responseConrete != null)
 				{
-
-					
+                    return (string)responseConrete.Result;
 				}
-
+				return null;
 			}
 			catch (Exception ex)
 			{
-				
+                return null;
 			}
         }
 

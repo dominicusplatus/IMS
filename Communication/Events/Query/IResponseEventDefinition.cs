@@ -6,6 +6,11 @@ namespace Communication.Events.Query
 		QueryDeviceResponseStarted = 1,
 		QueryDeviceResponseReady,
 		QueryDeviceResponseError,
+
+		QueryDeviceByIdResponseStarted,
+		QueryDeviceByIdResponseReady,
+		QueryDeviceByIdResponseError,
+
 		UpdateDeviceResponseStarted,
 		UpdateDeviceResponseReady,
 		UpdateDeviceResponseError,

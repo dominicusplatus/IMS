@@ -55,7 +55,7 @@ namespace IotDomain.Iot
 				queryResponse.RequestEventDefinition = request.EventDefinition;
 				queryResponse.Id = Guid.NewGuid().ToString();
 				queryResponse.ResponseEventDefinition = new DeviceQueryResponseEvent(ResponseEventType.UpdateDeviceResponseReady, Guid.NewGuid().ToString());
-                queryResponse.Result = false;
+
 
                 BaseUserEvent userEvent = new BaseUserEvent();
                 userEvent.User = request.EventDefinition.User;
@@ -63,7 +63,7 @@ namespace IotDomain.Iot
                 userEvent.Payload = request.Parameter;
                 StoreEvent(userEvent);
 
-                /*
+
                 IotDevice updated = request.Parameter as IotDevice;
                 if(updated!=null){
                     var filter = Builders<IotDevice>.Filter.Eq(s => s.Id, updated.Id);
@@ -72,7 +72,7 @@ namespace IotDomain.Iot
                         queryResponse.Result = true;
                     }
                 }
-                */
+                queryResponse.Result = updated.Id;
 
 				_responseRouter.Publish(queryResponse);
 

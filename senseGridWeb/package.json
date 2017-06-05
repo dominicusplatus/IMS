@@ -59,11 +59,16 @@
     "aspnet-prerendering": "^2.0.5",
     "aspnet-webpack": "^1.0.29",
     "bootstrap": "4.0.0-alpha.6",
+    "bundler": "^0.8.0",
     "core-js": "2.4.1",
     "font-awesome": "4.7.0",
+    "gem": "^2.4.2",
+    "install": "^0.10.1",
     "isomorphic-fetch": "2.2.1",
     "preboot": "4.5.2",
     "rxjs": "5.3.0",
+    "sudo": "^1.0.3",
+    "webpack": "^1.13.2",
     "zone.js": "0.8.9"
   },
   "devDependencies": {
